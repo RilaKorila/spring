@@ -15,5 +15,19 @@
   <body class="container">
     <h1 class="display-4">Hello</h1>
     <p class="h6 alert alert-primary" th:text="${msg}"></p>
+
+    <div class="h6 alert alert-primary">
+      <form method="post" action="/">
+        <input
+          type="text"
+          class="form-control me-1"
+          name="text1"
+          th:value="${value}"
+        />
+        <span class="input-group-btn">
+          <input type="submit" class="btn btn-primary px-4" value="Click" />
+        </span>
+      </form>
+    </div>
   </body>
 </html>
