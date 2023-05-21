@@ -23,12 +23,12 @@ public class SpringBootApp1Application{
 		app.run(args);
 	}
 
-	 @RequestMapping("/")
+	 @RequestMapping("/hello/")
 	 public String index(){
 	 	return "Hello, Spring boot3!";
 	 }
 
-	 @RequestMapping("/{num}")
+	 @RequestMapping("/hello/{num}")
 	 public DataObject index(@PathVariable int num){
 		int n  = num < 0 ? 0: num > data.length ? 0: num;
 		return data[n];
