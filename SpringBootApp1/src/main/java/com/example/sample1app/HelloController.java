@@ -22,8 +22,23 @@ public class HelloController {
     }
 
     @RequestMapping(value="/", method=RequestMethod.POST)
-    public ModelAndView form(@RequestParam("text1") String name, ModelAndView mav) {
-        mav.addObject("msg", "Hello,  " + name + "-san🌷");
+    public ModelAndView form(
+        @RequestParam("text1") String name, 
+        @RequestParam(value="check", required=false) boolean isHidden,
+        @RequestParam("flowers") String flower,
+        ModelAndView mav) 
+        {
+            try {
+                if (isHidden){
+                    mav.addObject("msg", "Hello,  *********-san" + flower);
+                }
+                else{
+                    mav.addObject("msg", "Hello,  " + name + "-san" + flower);
+                }
+            } catch (NullPointerException e) {
+                //TODO: handle exception
+                mav.addObject("nullらしい...");
+            }
         mav.addObject("value", name);
         mav.setViewName("index");
         return mav;

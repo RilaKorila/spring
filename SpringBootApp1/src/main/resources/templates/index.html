@@ -24,6 +24,18 @@
           name="text1"
           th:value="${value}"
         />
+        <div>
+          <label for="check">名前を隠す</label>
+          <input type="checkbox" class="form-check-input" name="check" />
+        </div>
+        <div>
+          <p>おはな：</p>
+          <select name="flowers" class="form-select" size="1">
+            <option value="🌷">🌷</option>
+            <option value="🌸">🌸</option>
+            <option value="🌻">🌻</option>
+          </select>
+        </div>
         <span class="input-group-btn">
           <input type="submit" class="btn btn-primary px-4" value="Click" />
         </span>
