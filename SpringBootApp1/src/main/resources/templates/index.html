@@ -41,5 +41,13 @@
         </span>
       </form>
     </div>
+
+    <h1>花占い</h1>
+    <p th:if="${flag}">好き</p>
+    <p th:unless="${flag}">嫌い</p>
+
+    <ul class="list-group" th:each="name:${names}">
+      <li class="list-group-item" th:text="${name}"></li>
+    </ul>
   </body>
 </html>

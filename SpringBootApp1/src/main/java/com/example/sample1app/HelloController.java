@@ -12,13 +12,29 @@ import org.springframework.web.bind.annotation.PathVariable;
 // Controllerを使うと、テンプレートエンジンをレンダリングして表示
 @Controller
 public class HelloController {
+    private boolean flag = false;
     
     @RequestMapping(value="/", method=RequestMethod.GET)
     public ModelAndView index(ModelAndView mav) {
+        flag = !flag;
+        String[] names = new String[] {"One", "Two", "Three"};
+
         mav.addObject("msg", "Hello,  ");
+        mav.addObject("flag", flag);
+        mav.addObject("names", names);
         mav.setViewName("index");
         // model.addAttribute("msg", "これはコントローラーが用意したメッセージです");
         return mav;
+    }
+
+    @RequestMapping("/other")
+    public String other(){
+        return "redirect:/";
+    }
+
+    @RequestMapping("/home")
+    public String home(){
+        return "forward:/";
     }
 
     @RequestMapping(value="/", method=RequestMethod.POST)
