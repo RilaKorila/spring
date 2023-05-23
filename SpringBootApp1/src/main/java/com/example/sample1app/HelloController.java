@@ -1,5 +1,6 @@
 package com.example.sample1app;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.ui.Model;
@@ -8,11 +9,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import main.java.com.example.sample1app.repositories.PersonRepository;
+import main.java.com.example.sample1app.Person;
+
 
 // Controllerを使うと、テンプレートエンジンをレンダリングして表示
 @Controller
 public class HelloController {
     private boolean flag = false;
+
+    @Autowired
+    PersonRepository repository;
     
     @RequestMapping(value="/", method=RequestMethod.GET)
     public ModelAndView index(ModelAndView mav) {
@@ -23,7 +30,10 @@ public class HelloController {
         mav.addObject("flag", flag);
         mav.addObject("names", names);
         mav.setViewName("index");
-        // model.addAttribute("msg", "これはコントローラーが用意したメッセージです");
+
+        // Person Repositoryを利用する
+        Iterable<Person> list = repository.findAll();
+        mav.addObject("data", list);
         return mav;
     }
 
