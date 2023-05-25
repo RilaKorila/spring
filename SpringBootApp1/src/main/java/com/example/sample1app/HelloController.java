@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -11,6 +12,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import main.java.com.example.sample1app.repositories.PersonRepository;
 import main.java.com.example.sample1app.Person;
+
+import jakarta.transaction.Transactional;
+
 
 
 // Controllerを使うと、テンプレートエンジンをレンダリングして表示
@@ -20,6 +24,13 @@ public class HelloController {
 
     @Autowired
     PersonRepository repository;
+
+    @RequestMapping(value="/crud", method=RequestMethod.POST)
+    @Transactional
+    public ModelAndView form(@ModelAttribute("formModel") Person Person, ModelAndView mav){
+        repository.saveAndFlush(Person);
+        return new ModelAndView("redirect:/crud/");
+    }
     
     @RequestMapping(value="/", method=RequestMethod.GET)
     public ModelAndView index(ModelAndView mav) {
