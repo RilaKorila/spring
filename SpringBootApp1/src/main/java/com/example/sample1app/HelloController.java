@@ -14,7 +14,7 @@ import main.java.com.example.sample1app.repositories.PersonRepository;
 import main.java.com.example.sample1app.Person;
 
 import jakarta.transaction.Transactional;
-
+import javax.annotation.PostConstruct;
 
 
 // Controllerを使うと、テンプレートエンジンをレンダリングして表示
@@ -24,6 +24,31 @@ public class HelloController {
 
     @Autowired
     PersonRepository repository;
+
+     // 初期データを生成
+    @PostConstruct
+    public void init() {
+        // ダミーデータ1
+        Person p1 = new Person();
+        p1.setName("taro");
+        p1.setAge(39);
+        p1.setMail("taro@gmail.com");
+        repository.saveAndFlush(p1);
+
+        // ダミーデータ2
+        Person p2 = new Person();
+        p2.setName("hanako");
+        p2.setAge(28);
+        p2.setMail("hanako@gmail.com");
+        repository.saveAndFlush(p2);
+
+        // ダミーデータ1
+        Person p3 = new Person();
+        p3.setName("sachie");
+        p3.setAge(39);
+        p3.setMail("sachie@gmail.com");
+        repository.saveAndFlush(p3);
+    }
 
     @RequestMapping(value="/crud", method=RequestMethod.POST)
     @Transactional
