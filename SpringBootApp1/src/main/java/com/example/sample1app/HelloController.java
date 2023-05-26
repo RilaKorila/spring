@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PathVariable;
+import java.util.Optional;
 
 import main.java.com.example.sample1app.repositories.PersonRepository;
 import main.java.com.example.sample1app.Person;
@@ -81,6 +82,23 @@ public class HelloController {
     @RequestMapping("/home")
     public String home(){
         return "forward:/";
+    }
+
+    // 指定したIDのオブジェクトの値が、formに入力された状態(変更可能状態)で表示される
+    @RequestMapping(value="/edit/{id}", method=RequestMethod.GET)
+    public ModelAndView edit(@ModelAttribute Person Person, @PathVariable int id, ModelAndView mav) {
+        mav.setViewName("edit");
+        mav.addObject("formModel", data.get());
+        return mav;
+    }
+
+    // 編集後、送信ボタンが押されたらPOSTメソッドが呼ばれる
+    // DBをアップデートする
+    @RequestMapping("/edit", method=RequestMethod.POST)
+    @Transactional
+    public ModelAndView update(@ModelAttribute Person Person, ModelAndView mav) {
+        repository.saveAndFlush(Person);
+        return new ModelAndView("redirect:/");
     }
 
     @RequestMapping(value="/", method=RequestMethod.POST)
