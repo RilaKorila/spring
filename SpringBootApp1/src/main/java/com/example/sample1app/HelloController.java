@@ -88,6 +88,10 @@ public class HelloController {
     @RequestMapping(value="/edit/{id}", method=RequestMethod.GET)
     public ModelAndView edit(@ModelAttribute Person Person, @PathVariable int id, ModelAndView mav) {
         mav.setViewName("edit");
+        mav.addObject("title", "Edit Person");
+        mav.addObject("msg", "Please edit Person data");
+
+        Optional data = repository.findById((long)id); 
         mav.addObject("formModel", data.get());
         return mav;
     }
@@ -97,6 +101,28 @@ public class HelloController {
     @RequestMapping("/edit", method=RequestMethod.POST)
     @Transactional
     public ModelAndView update(@ModelAttribute Person Person, ModelAndView mav) {
+        repository.saveAndFlush(Person);
+        return new ModelAndView("redirect:/");
+    }
+
+    // 指定したIDのオブジェクトの値を表示する
+    @RequestMapping(value="/delete/{id}", method=RequestMethod.GET)
+    public ModelAndView delete(@ModelAttribute Person Person, @PathVariable int id, ModelAndView mav) {
+        mav.setViewName("delete");
+        mav.addObject("title", "Delete Person");
+        mav.addObject("msg", "Can I delete this person data??");
+
+        Optional data = repository.findById((long)id);
+        mav.addObject("formModel", data.get());
+        return mav;
+    }
+
+    // 編集後、送信ボタンが押されたらPOSTメソッドが呼ばれる
+    // DBをアップデートする
+    @RequestMapping("/delete", method=RequestMethod.POST)
+    @Transactional
+    public ModelAndView remove(@RequestParam long id, ModelAndView mav) {
+        repository.deleteById(id);
         repository.saveAndFlush(Person);
         return new ModelAndView("redirect:/");
     }
