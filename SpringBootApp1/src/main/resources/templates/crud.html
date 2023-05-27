@@ -19,6 +19,9 @@
       <p th:text="${msg}"></p>
 
       <form method="post" action="/crud" th:object="${formModel}">
+        <ul>
+          <li th:each="error : ${#fields.detailedErrors()}" class="text text-danger" th:text="${error.message}"></li>
+        </ul>
         <div class="mb-3">
           <label for="name" class="form-label">Name</label>
           <input id="name"
