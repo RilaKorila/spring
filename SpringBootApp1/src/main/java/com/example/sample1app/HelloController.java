@@ -151,7 +151,7 @@ public class HelloController {
 
     @RequestMapping("/{num}")
     public String index(@PathVariable int num, Model model) {
-        final String msg = "あなたの点数は .... " + String.valueOf(num) + "点です！！👏";
+        final String msg = "あなたの点数は .... " + num + "点です！！👏";
         model.addAttribute("msg", msg);
         return "index";
     }
