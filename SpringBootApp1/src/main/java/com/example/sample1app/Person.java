@@ -32,7 +32,7 @@ public class Person {
     private Integer age;
 
     @Column
-    @Phone
+    @Phone(onlyNumber = true)
     private String phone;
     
     @Column(nullable = true)
