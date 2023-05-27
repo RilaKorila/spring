@@ -28,6 +28,9 @@ public class HelloController {
     @Autowired
     PersonRepository repository;
 
+    @Autowired
+    PersonDAOPersonImpl dao;
+
      // 初期データを生成
     @PostConstruct
     public void init() {
@@ -51,6 +54,16 @@ public class HelloController {
         p3.setAge(39);
         p3.setMail("sachie@gmail.com");
         repository.saveAndFlush(p3);
+    }
+
+    @RequestMapping("/find")
+    public ModelAndView find(ModelAndView mav){
+        mav.setViewName("find");
+        mav.addObject("title", "findAll");
+
+        Iterable<Person> list = dao.getAll();
+        mav.addObject("data", list);
+        return mav;
     }
 
     @RequestMapping(value = "/crud", method = RequestMethod.GET)
