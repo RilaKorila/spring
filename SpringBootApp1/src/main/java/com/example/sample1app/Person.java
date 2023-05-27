@@ -1,4 +1,4 @@
-package main.java.com.example.sample1app;
+package com.example.sample1app;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

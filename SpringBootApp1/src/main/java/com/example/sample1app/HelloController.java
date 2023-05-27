@@ -1,5 +1,6 @@
 package com.example.sample1app;
 
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.servlet.ModelAndView;
@@ -11,11 +12,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PathVariable;
 import java.util.Optional;
 
-import main.java.com.example.sample1app.repositories.PersonRepository;
-import main.java.com.example.sample1app.Person;
+import com.example.sample1app.repositories.PersonRepository;
+import com.example.sample1app.Person;
 
 import jakarta.transaction.Transactional;
-import javax.annotation.PostConstruct;
 
 
 // Controllerを使うと、テンプレートエンジンをレンダリングして表示
@@ -91,14 +91,14 @@ public class HelloController {
         mav.addObject("title", "Edit Person");
         mav.addObject("msg", "Please edit Person data");
 
-        Optional data = repository.findById((long)id); 
+        Optional<Person> data = repository.findById((long)id);
         mav.addObject("formModel", data.get());
         return mav;
     }
 
     // 編集後、送信ボタンが押されたらPOSTメソッドが呼ばれる
     // DBをアップデートする
-    @RequestMapping("/edit", method=RequestMethod.POST)
+    @RequestMapping(value="/edit", method=RequestMethod.POST)
     @Transactional
     public ModelAndView update(@ModelAttribute Person Person, ModelAndView mav) {
         repository.saveAndFlush(Person);
@@ -112,18 +112,17 @@ public class HelloController {
         mav.addObject("title", "Delete Person");
         mav.addObject("msg", "Can I delete this person data??");
 
-        Optional data = repository.findById((long)id);
+        Optional<Person> data = repository.findById((long)id);
         mav.addObject("formModel", data.get());
         return mav;
     }
 
     // 編集後、送信ボタンが押されたらPOSTメソッドが呼ばれる
     // DBをアップデートする
-    @RequestMapping("/delete", method=RequestMethod.POST)
+    @RequestMapping(value="/delete", method=RequestMethod.POST)
     @Transactional
     public ModelAndView remove(@RequestParam long id, ModelAndView mav) {
         repository.deleteById(id);
-        repository.saveAndFlush(Person);
         return new ModelAndView("redirect:/");
     }
 
