@@ -18,10 +18,10 @@
       <h1 class="display-4 mb-4" th:text="${title}"></h1>
       <p th:text="${msg}"></p>
 
-      <form method="post" action="/" th:object="${formModel}">
+      <form method="post" action="/crud" th:object="${formModel}">
         <div class="mb-3">
           <label for="name" class="form-label">Name</label>
-          <input
+          <input id="name"
             type="text"
             class="form-control"
             name="name"
@@ -29,8 +29,8 @@
           />
         </div>
         <div class="mb-3">
-          <label for="name" class="form-label">Mail</label>
-          <input
+          <label for="mail" class="form-label">Mail</label>
+          <input id="mail"
             type="text"
             class="form-control"
             name="mail"
@@ -38,8 +38,8 @@
           />
         </div>
         <div class="mb-3">
-          <label for="name" class="form-label">Age</label>
-          <input
+          <label for="age" class="form-label">Age</label>
+          <input id="age"
             type="number"
             class="form-control"
             name="age"
@@ -48,7 +48,7 @@
         </div>
         <div class="mb-3">
           <label for="memo" class="form-label">Memo</label>
-          <textarea
+          <textarea id="memo"
             class="form-control"
             name="memo"
             th:text="*{memo}"

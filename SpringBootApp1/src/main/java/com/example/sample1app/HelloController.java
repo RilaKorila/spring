@@ -3,6 +3,8 @@ package com.example.sample1app;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -51,11 +53,41 @@ public class HelloController {
         repository.saveAndFlush(p3);
     }
 
+    @RequestMapping(value = "/crud", method = RequestMethod.GET)
+    public ModelAndView crud(@ModelAttribute("formModel") Person Person,
+                             ModelAndView mav){
+        System.out.println("crudだよ");
+        mav.setViewName("crud");
+        mav.addObject("title", "データベースの情報を表示するよ");
+        mav.addObject("msg", "入力情報はDBに保存されるよ. ちゃんと入力してね");
+
+        // Person Repositoryを利用する
+        Iterable<Person> list = repository.findAll();
+        mav.addObject("data", list);
+        return mav;
+    }
+
     @RequestMapping(value="/crud", method=RequestMethod.POST)
     @Transactional
-    public ModelAndView form(@ModelAttribute("formModel") Person Person, ModelAndView mav){
-        repository.saveAndFlush(Person);
-        return new ModelAndView("redirect:/crud/");
+    public ModelAndView form(@ModelAttribute("formModel") @Validated Person Person,
+                             BindingResult result,
+                             ModelAndView mav){
+        ModelAndView res = null;
+        System.out.println(result.getFieldErrors());
+
+        if (!result.hasErrors()){
+            // validation結果にエラーがなければ、DBを更新しリダイレクト
+            repository.saveAndFlush(Person);
+            res = new ModelAndView("redirect:/crud");
+        }else{
+            mav.setViewName("crud");
+            mav.addObject("title", "データベースの情報を表示するよ");
+            mav.addObject("msg", "formの形式が変だよ");
+            Iterable<Person> personList = repository.findAll();
+            mav.addObject("data", personList);
+            res = mav;
+        }
+        return res;
     }
     
     @RequestMapping(value="/", method=RequestMethod.GET)
@@ -63,10 +95,10 @@ public class HelloController {
         flag = !flag;
         String[] names = new String[] {"One", "Two", "Three"};
 
+        mav.setViewName("index");
         mav.addObject("msg", "Hello,  ");
         mav.addObject("flag", flag);
         mav.addObject("names", names);
-        mav.setViewName("index");
 
         // Person Repositoryを利用する
         Iterable<Person> list = repository.findAll();
@@ -128,11 +160,21 @@ public class HelloController {
 
     @RequestMapping(value="/", method=RequestMethod.POST)
     public ModelAndView form(
-        @RequestParam("text1") String name, 
-        @RequestParam(value="check", required=false) boolean isHidden,
-        @RequestParam("flowers") String flower,
-        ModelAndView mav) 
-        {
+            @ModelAttribute("formModel") @Validated Person person,
+            BindingResult result,
+            @RequestParam("text1") String name,
+            @RequestParam(value="check", required=false) boolean isHidden,
+            @RequestParam("flowers") String flower,
+            ModelAndView mav)
+    {
+        ModelAndView res = null;
+        System.out.println(result.getFieldErrors());
+        if(!result.hasErrors()){
+            // formにエラーが含まれていなければ、DBを更新しリダイレクト
+            repository.saveAndFlush(person);
+            res = new ModelAndView("redirect:/");
+        }else{
+            mav.setViewName("index");
             try {
                 if (isHidden){
                     mav.addObject("msg", "Hello,  *********-san" + flower);
@@ -144,9 +186,11 @@ public class HelloController {
                 //TODO: handle exception
                 mav.addObject("nullらしい...");
             }
-        mav.addObject("value", name);
-        mav.setViewName("index");
-        return mav;
+            mav.addObject("value", name);
+            res = mav;
+        }
+
+        return res;
     }
 
     @RequestMapping("/{num}")
