@@ -10,6 +10,7 @@
       integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
       crossorigin="anonymous"
     />
+    <style>.err {color:red}</style>
     <title>CRUD</title>
   </head>
 
@@ -19,9 +20,9 @@
       <p th:text="${msg}"></p>
 
       <form method="post" action="/crud" th:object="${formModel}">
-        <ul>
-          <li th:each="error : ${#fields.detailedErrors()}" class="text text-danger" th:text="${error.message}"></li>
-        </ul>
+<!--        <ul>-->
+<!--          <li th:each="error : ${#fields.detailedErrors()}" class="text text-danger" th:text="${error.message}"></li>-->
+<!--        </ul>-->
         <div class="mb-3">
           <label for="name" class="form-label">Name</label>
           <input id="name"
@@ -30,6 +31,8 @@
             name="name"
             th:value="*{name}"
           />
+          <div th:if="${#fields.hasErrors('name')}"
+          th:errors="*{name}" th:errorclass="err"></div>
         </div>
         <div class="mb-3">
           <label for="mail" class="form-label">Mail</label>
@@ -39,6 +42,8 @@
             name="mail"
             th:value="*{mail}"
           />
+          <div th:if="${#fields.hasErrors('mail')}"
+               th:errors="*{mail}" th:errorclass="err"></div>
         </div>
         <div class="mb-3">
           <label for="age" class="form-label">Age</label>
@@ -48,7 +53,22 @@
             name="age"
             th:value="*{age}"
           />
+          <div th:if="${#fields.hasErrors('age')}"
+               th:errors="*{age}" th:errorclass="err"></div>
         </div>
+        <div class="mb-3">
+        <label for="phone" class="form-label">Phone</label>
+        <p>全て半角数字で入力してください(記号は不要)</p>
+        <input id="phone"
+               type="text"
+               class="form-control"
+               name="phone"
+               th:value="*{phone}"
+        />
+        <div th:if="${#fields.hasErrors('phone')}"
+             th:errors="*{phone}" th:errorclass="err"></div>
+        </div>
+
         <div class="mb-3">
           <label for="memo" class="form-label">Memo</label>
           <textarea id="memo"
@@ -56,6 +76,8 @@
             name="memo"
             th:text="*{memo}"
           ></textarea>
+          <div th:if="${#fields.hasErrors('memo')}"
+               th:errors="*{memo}" th:errorclass="err"></div>
         </div>
         <input type="submit" class="btn btn-primary" value="Create" />
       </form>
@@ -67,6 +89,7 @@
             <th>Name</th>
             <th>Mail</th>
             <th>Age</th>
+            <th>Phone</th>
           </tr>
         </thead>
         <tbody>
@@ -75,6 +98,7 @@
             <td th:text="${item.name}"></td>
             <td th:text="${item.mail}"></td>
             <td th:text="${item.age}"></td>
+              <td th:text="${item.phone}"></td>
           </tr>
         </tbody>
       </table>

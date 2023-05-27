@@ -30,6 +30,10 @@ public class Person {
     @Min(0)
     @Max(200)
     private Integer age;
+
+    @Column
+    @Phone
+    private String phone;
     
     @Column(nullable = true)
     private String memo;
@@ -60,6 +64,13 @@ public class Person {
     }
     public void setAge(Integer age) {
         this.age = age;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public String getMemo() {
