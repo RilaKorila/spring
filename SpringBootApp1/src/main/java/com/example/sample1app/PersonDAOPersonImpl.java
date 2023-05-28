@@ -26,6 +26,16 @@ public class PersonDAOPersonImpl implements PersonDAO<Person>{
         List<Person> list = query.getResultList();
         entityManager.close();
         return list;
+    }
 
+     @Override
+     public Person findById(final long id){
+        return (Person)entityManager.createQuery("from Person where id = " + id).getSingleResult();
+     }
+
+    @Override
+    public List<Person> findByName(final String name){
+        // TODO: SQLインジェクションに対応
+        return (List<Person>)entityManager.createQuery("from Person where name = '" + name + "'").getResultList();
     }
 }

@@ -1,6 +1,7 @@
 package com.example.sample1app;
 
 import jakarta.annotation.PostConstruct;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PathVariable;
 import java.util.Optional;
+import java.util.regex.Pattern;
 
 import com.example.sample1app.repositories.PersonRepository;
 import com.example.sample1app.Person;
@@ -56,13 +58,45 @@ public class HelloController {
         repository.saveAndFlush(p3);
     }
 
-    @RequestMapping("/find")
+    @RequestMapping(value="/find", method = RequestMethod.GET)
     public ModelAndView find(ModelAndView mav){
         mav.setViewName("find");
         mav.addObject("title", "findAll");
+        mav.addObject("msg", "データベースの内容を全件表示");
 
         Iterable<Person> list = dao.getAll();
         mav.addObject("data", list);
+        return mav;
+    }
+
+    @RequestMapping(value="/find", method = RequestMethod.POST)
+    public ModelAndView search(HttpServletRequest req, ModelAndView mav){
+        mav.setViewName("find");
+        String param = req.getParameter("find_str");
+
+        if (param == "") {
+                mav = new ModelAndView("redirect:/find");
+        }
+        else{
+            mav.addObject("title", "検索結果");
+            mav.addObject("msg", "[ " + param + " ]の検索結果");
+            mav.addObject("value", param);
+
+            Pattern pattern = Pattern.compile("[0-9]*");
+
+            if(pattern.matcher(param).matches()){
+                // queryが数字
+                final long id = Integer.parseInt(param);
+                Person data = dao.findById(id);
+                Person[] list = new Person[] {data};
+                mav.addObject("data", list);
+            }else{
+                // queryが文字列
+                Iterable<Person> list = dao.findByName(param);
+                mav.addObject("data", list);
+            }
+        }
+        // (TODO) 検索結果、該当データがない時のエラーハンドリング
         return mav;
     }
 
