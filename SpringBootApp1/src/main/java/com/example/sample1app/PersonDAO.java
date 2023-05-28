@@ -9,4 +9,6 @@ public interface PersonDAO<T> extends Serializable {
     public T findById(long id);
 
     public List<T> findByName(String name);
+
+    public List<T> find(String fstr);
 }

@@ -74,28 +74,33 @@ public class HelloController {
         mav.setViewName("find");
         String param = req.getParameter("find_str");
 
-        if (param == "") {
-                mav = new ModelAndView("redirect:/find");
-        }
-        else{
-            mav.addObject("title", "検索結果");
-            mav.addObject("msg", "[ " + param + " ]の検索結果");
-            mav.addObject("value", param);
+        // chap 5-2
+        Iterable<Person> list = dao.find(param);
+        mav.addObject("data", list);
 
-            Pattern pattern = Pattern.compile("[0-9]*");
-
-            if(pattern.matcher(param).matches()){
-                // queryが数字
-                final long id = Integer.parseInt(param);
-                Person data = dao.findById(id);
-                Person[] list = new Person[] {data};
-                mav.addObject("data", list);
-            }else{
-                // queryが文字列
-                Iterable<Person> list = dao.findByName(param);
-                mav.addObject("data", list);
-            }
-        }
+        // chap 5-1
+//        if (param == "") {
+//                mav = new ModelAndView("redirect:/find");
+//        }
+//        else{
+//            mav.addObject("title", "検索結果");
+//            mav.addObject("msg", "[ " + param + " ]の検索結果");
+//            mav.addObject("value", param);
+//
+//            Pattern pattern = Pattern.compile("[0-9]*");
+//
+//            if(pattern.matcher(param).matches()){
+//                // queryが数字
+//                final long id = Integer.parseInt(param);
+//                Person data = dao.findById(id);
+//                Person[] list = new Person[] {data};
+//                mav.addObject("data", list);
+//            }else{
+//                // queryが文字列
+//                Iterable<Person> list = dao.findByName(param);
+//                mav.addObject("data", list);
+//            }
+//        }
         // (TODO) 検索結果、該当データがない時のエラーハンドリング
         return mav;
     }

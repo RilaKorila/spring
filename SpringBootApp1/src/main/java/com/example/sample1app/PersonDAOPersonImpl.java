@@ -38,4 +38,25 @@ public class PersonDAOPersonImpl implements PersonDAO<Person>{
         // TODO: SQLインジェクションに対応
         return (List<Person>)entityManager.createQuery("from Person where name = '" + name + "'").getResultList();
     }
+
+    @Override
+    public List <Person> find(String fstr){
+        // (TODO) 初期値にnull代入する必要ある? query.getResultListが空リスト返すなら不要な気が...
+        List<Person> list = null;
+        String qstr = "from Person where id = :fstr or name like :fname or mail like :fmail";
+        Long fid = 0L;
+        try{
+            fid = Long.parseLong(fstr);
+        }
+        catch (NumberFormatException e){
+            e.printStackTrace();
+        }
+        Query query = entityManager.createQuery(qstr)
+                .setParameter("fstr", fid)
+                .setParameter("fname", fstr)
+                .setParameter("fmail", fstr);
+        list = query.getResultList();
+
+        return list;
+    }
 }
