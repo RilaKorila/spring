@@ -43,7 +43,7 @@ public class PersonDAOPersonImpl implements PersonDAO<Person>{
     public List <Person> find(String fstr){
         // (TODO) 初期値にnull代入する必要ある? query.getResultListが空リスト返すなら不要な気が...
         List<Person> list = null;
-        String qstr = "from Person where id = :fstr or name like :fname or mail like :fmail";
+        String qstr = "from Person where id = ?1 or name like ?2 or mail like ?3";
         Long fid = 0L;
         try{
             fid = Long.parseLong(fstr);
@@ -52,9 +52,9 @@ public class PersonDAOPersonImpl implements PersonDAO<Person>{
             e.printStackTrace();
         }
         Query query = entityManager.createQuery(qstr)
-                .setParameter("fstr", fid)
-                .setParameter("fname", fstr)
-                .setParameter("fmail", fstr);
+                .setParameter(1, fid)
+                .setParameter(2, "%" + fstr + "%")
+                .setParameter(3, fstr + "%@%");
         list = query.getResultList();
 
         return list;
