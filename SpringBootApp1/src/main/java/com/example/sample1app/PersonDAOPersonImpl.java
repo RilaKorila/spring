@@ -3,6 +3,9 @@ package com.example.sample1app;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -20,11 +23,18 @@ public class PersonDAOPersonImpl implements PersonDAO<Person>{
 
     @Override
     public List<Person> getAll(){
-        Query query = entityManager.createQuery("from Person");
+        // Criteria APIを使った書き方
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Person> query = builder.createQuery(Person.class);
+        Root<Person> root = query.from(Person.class);
+        query.select(root);
+        @SuppressWarnings("unchecked")
+        List<Person> list = (List<Person>)entityManager.createQuery(query).getResultList();
 
-        // @SuppressWarnings("unchecked");
-        List<Person> list = query.getResultList();
-        entityManager.close();
+        // クエリを使った書き方
+        // Query query = entityManager.createQuery("from Person");
+        // List<Person> list = query.getResultList();
+        // entityManager.close();
         return list;
     }
 
@@ -43,7 +53,6 @@ public class PersonDAOPersonImpl implements PersonDAO<Person>{
     public List <Person> find(String fstr){
         // (TODO) 初期値にnull代入する必要ある? query.getResultListが空リスト返すなら不要な気が...
         List<Person> list = null;
-        String qstr = "from Person where id = ?1 or name like ?2 or mail like ?3";
         Long fid = 0L;
         try{
             fid = Long.parseLong(fstr);
@@ -51,14 +60,31 @@ public class PersonDAOPersonImpl implements PersonDAO<Person>{
         catch (NumberFormatException e){
             e.printStackTrace();
         }
-        Query query = entityManager.createNamedQuery("findWithName")
-                .setParameter("fname", "%" + fstr + "%");
 
+        // Criteria APIを使った書き方
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Person> query = builder.createQuery(Person.class);
+        Root<Person> root = query.from(Person.class);
+        query.select(root)
+                .where(builder
+                        .or(
+                                builder.equal(root.get("id"), fid),
+                                builder.like(root.get("name"), "%" + fstr + "%"),
+                                builder.like(root.get("mail"), fstr + "%@%")));
+
+        list = (List<Person>)entityManager.createQuery(query).getResultList();
+
+        // NamedQueryを使った書き方
+        // Query query = entityManager.createNamedQuery("findWithName")
+        //        .setParameter("fname", "%" + fstr + "%");
+
+        // クエリを直接記述する書き方
+//        String qstr = "from Person where id = ?1 or name like ?2 or mail like ?3";
 //        Query query = entityManager.createQuery(qstr)
 //                .setParameter(1, fid)
 //                .setParameter(2, "%" + fstr + "%")
 //                .setParameter(3, fstr + "%@%");
-        list = query.getResultList();
+        // list = query.getResultList();
 
         return list;
     }
