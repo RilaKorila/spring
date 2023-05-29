@@ -13,11 +13,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PathVariable;
+
+import java.util.ArrayList;
 import java.util.Optional;
-import java.util.regex.Pattern;
 
 import com.example.sample1app.repositories.PersonRepository;
-import com.example.sample1app.Person;
 
 import jakarta.transaction.Transactional;
 
@@ -74,14 +74,37 @@ public class HelloController {
         mav.setViewName("find");
         String param = req.getParameter("find_str");
 
+        if (param == "") {
+                return new ModelAndView("redirect:/find");
+        }
+
+        mav.addObject("title", "検索結果");
+        mav.addObject("msg", "[ " + param + " ]の検索結果");
+
+        Iterable<Person> list = new ArrayList<Person>();
+        if (param.contains(",")){
+            String[] params = param.split(",");
+            try {
+                list = dao.findByAge(
+                        Integer.parseInt(params[0]),
+                        Integer.parseInt(params[1])
+                );
+            }catch(NumberFormatException e){
+                e.printStackTrace();
+            }
+
+            mav.addObject("data", list);
+            return mav;
+        }
+
         // chap 5-2
-        Iterable<Person> list = dao.find(param);
+        list = dao.find(param);
         mav.addObject("data", list);
+        return mav;
+
 
         // chap 5-1
-//        if (param == "") {
-//                mav = new ModelAndView("redirect:/find");
-//        }
+//
 //        else{
 //            mav.addObject("title", "検索結果");
 //            mav.addObject("msg", "[ " + param + " ]の検索結果");
@@ -102,7 +125,6 @@ public class HelloController {
 //            }
 //        }
         // (TODO) 検索結果、該当データがない時のエラーハンドリング
-        return mav;
     }
 
     @RequestMapping(value = "/crud", method = RequestMethod.GET)
@@ -114,7 +136,7 @@ public class HelloController {
         mav.addObject("msg", "入力情報はDBに保存されるよ. ちゃんと入力してね");
 
         // Person Repositoryを利用する
-        Iterable<Person> list = repository.findAll();
+        Iterable<Person> list = repository.findAllOrderByName();
         mav.addObject("data", list);
         return mav;
     }
@@ -153,7 +175,7 @@ public class HelloController {
         mav.addObject("names", names);
 
         // Person Repositoryを利用する
-        Iterable<Person> list = repository.findAll();
+         Iterable<Person> list = repository.findAllOrderByName();
         mav.addObject("data", list);
         return mav;
     }

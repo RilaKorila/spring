@@ -7,6 +7,9 @@ import jakarta.validation.constraints.*;
         name="findWithName",
         query = "from Person where name like :fname"
 )
+@NamedQuery(
+        name = "findByAge",
+        query = "from Person where :min <= age and age <= :max")
 
 @Entity
 @Table(name="people")
