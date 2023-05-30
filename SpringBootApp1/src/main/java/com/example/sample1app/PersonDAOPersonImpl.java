@@ -99,4 +99,20 @@ public class PersonDAOPersonImpl implements PersonDAO<Person>{
         list = query.getResultList();
         return list;
     }
+
+    @Override
+    public List<Person> getPage(int page, int limit){
+        // 取り出す位置
+        int offset = page * limit;
+
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Person> query = builder.createQuery(Person.class);
+        Root<Person> root = query.from(Person.class);
+        query.select(root);
+
+        return (List<Person>) entityManager.createQuery(query)
+                .setFirstResult(offset)
+                .setMaxResults(limit)
+                .getResultList();
+    }
 }

@@ -127,6 +127,18 @@ public class HelloController {
         // (TODO) 検索結果、該当データがない時のエラーハンドリング
     }
 
+    @RequestMapping("/page/{page}")
+    public ModelAndView page(ModelAndView mav, @PathVariable int page){
+        final int DATA_PER_PAGE = 2;
+        mav.setViewName("find");
+        mav.addObject("msg", "Personを" + DATA_PER_PAGE + "件ずつ表示するよ");
+
+        Iterable<Person> list = dao.getPage(page, DATA_PER_PAGE);
+        mav.addObject("data", list);
+
+        return mav;
+    }
+
     @RequestMapping(value = "/crud", method = RequestMethod.GET)
     public ModelAndView crud(@ModelAttribute("formModel") Person Person,
                              ModelAndView mav){
