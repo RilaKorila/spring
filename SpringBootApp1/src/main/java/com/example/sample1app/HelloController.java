@@ -60,7 +60,7 @@ public class HelloController {
         p2.setMail("hanako@gmail.com");
         repository.saveAndFlush(p2);
 
-        // ダミーデータ1
+        // ダミーデータ3
         Person p3 = new Person();
         p3.setName("sachie");
         p3.setAge(39);

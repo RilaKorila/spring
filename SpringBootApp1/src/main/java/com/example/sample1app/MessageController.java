@@ -17,16 +17,13 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 
 @Controller
-@RequestMapping("/msg/")
+@RequestMapping("msg")
 public class MessageController {
     @Autowired
     MessageRepository repository;
 
     @Autowired
     PersonDAOMessageImpl dao;
-
-    @PersistenceContext
-    EntityManager entityManager;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public ModelAndView index(ModelAndView mav,
