@@ -22,17 +22,21 @@ public class MessageController {
     @Autowired
     MessageRepository repository;
 
+    @Autowired
+    PersonDAOMessageImpl dao;
+
     @PersistenceContext
     EntityManager entityManager;
 
-    @RequestMapping(value = "/message", method = RequestMethod.GET)
+    @RequestMapping(value = "/", method = RequestMethod.GET)
     public ModelAndView index(ModelAndView mav,
                               @ModelAttribute("formModel") Message message){
         mav.setViewName("messages/index");
         mav.addObject("title","Message");
         mav.addObject("msg","Messageのサンプルです。");
         mav.addObject("formModel", message);
-        List<Message> list = (List<Message>)repository.findAll();
+//        List<Message> list = (List<Message>)repository.findAll();
+        List<Message> list = dao.getAll();
         mav.addObject("data", list);
         return mav;
     }
