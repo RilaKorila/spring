@@ -1,5 +1,6 @@
 package com.example.sample1app;
 
+import com.example.sample1app.repositories.MessageRepository;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Optional;
 
 import com.example.sample1app.repositories.PersonRepository;
@@ -31,6 +33,9 @@ public class HelloController {
     PersonRepository repository;
 
     @Autowired
+    MessageRepository messageRepository;
+
+    @Autowired
     PersonDAOPersonImpl dao;
 
      // 初期データを生成
@@ -41,7 +46,12 @@ public class HelloController {
         p1.setName("taro");
         p1.setAge(39);
         p1.setMail("taro@gmail.com");
+        Message msg1 = new Message();
+        msg1.setDatetime(Calendar.getInstance().getTime());
+        msg1.setContent("ハロー");
+        msg1.setPerson(p1);
         repository.saveAndFlush(p1);
+        messageRepository.saveAndFlush(msg1);
 
         // ダミーデータ2
         Person p2 = new Person();
@@ -142,7 +152,6 @@ public class HelloController {
     @RequestMapping(value = "/crud", method = RequestMethod.GET)
     public ModelAndView crud(@ModelAttribute("formModel") Person Person,
                              ModelAndView mav){
-        System.out.println("crudだよ");
         mav.setViewName("crud");
         mav.addObject("title", "データベースの情報を表示するよ");
         mav.addObject("msg", "入力情報はDBに保存されるよ. ちゃんと入力してね");

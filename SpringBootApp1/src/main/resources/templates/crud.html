@@ -90,6 +90,7 @@
             <th>Mail</th>
             <th>Age</th>
             <th>Phone</th>
+            <th>Messages</th>
           </tr>
         </thead>
         <tbody>
@@ -98,7 +99,12 @@
             <td th:text="${item.name}"></td>
             <td th:text="${item.mail}"></td>
             <td th:text="${item.age}"></td>
-              <td th:text="${item.phone}"></td>
+            <td th:text="${item.phone}"></td>
+            <td>
+                <ul th:each="msg:${item.messages}">
+                    <li th:text="${msg.content}"></li>
+                </ul>
+            </td>
           </tr>
         </tbody>
       </table>
