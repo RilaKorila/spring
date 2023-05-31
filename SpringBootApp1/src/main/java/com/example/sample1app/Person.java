@@ -3,6 +3,8 @@ package com.example.sample1app;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
+import java.util.List;
+
 @NamedQuery(
         name="findWithName",
         query = "from Person where name like :fname"
@@ -40,6 +42,10 @@ public class Person {
     
     @Column(nullable = true)
     private String memo;
+
+    @OneToMany(mappedBy = "Person")
+    @Column(nullable = true)
+    private List<Message> messages;
 
     public long getId() {
         return id;
@@ -80,5 +86,13 @@ public class Person {
         return memo;
     }
     public void setMemo(String memo) {this.memo = memo;
+    }
+
+    public List<Message> getMessages() {
+        return messages;
+    }
+
+    public void setMessages(List<Message> messages) {
+        this.messages = messages;
     }
 }
