@@ -3,6 +3,7 @@ package com.example.sample1app;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,6 +18,12 @@ public class SpringBootApp1Application{
 			new DataObject("hanako", "hanako@gmail.com", 23),
 			new DataObject("jiro", "jiro@gmail.com", 10),
 	};
+
+	@Bean
+	public Post post(){
+		// returnするインスタンスをbeanとして登録
+		return new Post(0, 0, "dummy", "ダミーだよ");
+	}
 
 	public static void main(String[] args) {
 		SpringApplication app = new SpringApplication(SpringBootApp1Application.class);

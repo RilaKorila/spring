@@ -35,6 +35,13 @@ public class HelloController {
     @Autowired
     MessageRepository messageRepository;
 
+    // Beanとして登録したからAutowiredでインスタンスが作れる
+    @Autowired
+    Post post;
+
+    @Autowired
+    SampleComponent sampleComponent;
+
     @Autowired
     PersonDAOPersonImpl dao;
 
@@ -300,6 +307,16 @@ public class HelloController {
         final String msg = "Hello,  " + name + "-san🌷";
         model.addAttribute("msg", msg);
         return "index";
+    }
+
+    @RequestMapping("/bean")
+    public ModelAndView bean(ModelAndView mav){
+        mav.setViewName("bean");
+        mav.addObject("title", "Bean sample");
+        mav.addObject("msg", post);
+        mav.addObject("msg2", sampleComponent.message());
+
+        return mav;
     }
 
     // @RequestMapping("/{temp}")
