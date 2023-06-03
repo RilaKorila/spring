@@ -43,6 +43,9 @@ public class HelloController {
     SampleComponent sampleComponent;
 
     @Autowired
+    SampleService service;
+
+    @Autowired
     PersonDAOPersonImpl dao;
 
      // 初期データを生成
@@ -315,6 +318,7 @@ public class HelloController {
         mav.addObject("title", "Bean sample");
         mav.addObject("msg", post);
         mav.addObject("msg2", sampleComponent.message());
+        mav.addObject("data", new Post[]{service.getPost()});
 
         return mav;
     }
