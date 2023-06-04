@@ -318,11 +318,33 @@ public class HelloController {
         mav.addObject("title", "Bean sample");
         mav.addObject("msg", post);
         mav.addObject("msg2", sampleComponent.message());
-        mav.addObject("data", new Post[]{service.getPost()});
+        mav.addObject("data", service.getAllPosts());
+        // dummy data
+        // mav.addObject("data", new Post[]{service.getDummyPost()});
 
         return mav;
     }
 
+    @RequestMapping(value = "/bean", method = RequestMethod.POST)
+    public ModelAndView bean(HttpServletRequest request, ModelAndView mav){
+        String param = request.getParameter("find_str");
+        mav.setViewName("bean");
+        mav.addObject("title", "Bean sample");
+        mav.addObject("msg", param);
+        Post post = service.getAndSavePost(Integer.parseInt(param));
+        mav.addObject("data", new Post[]{post});
+        return mav;
+    }
+
+    @RequestMapping("/local")
+    public ModelAndView localData(ModelAndView mav){
+        mav.setViewName("bean");
+        mav.addObject("title", "Local Data");
+        mav.addObject("msg", "repositoryを使ってlocalデータをひっぱるよ");
+        mav.addObject("local", true);
+        mav.addObject("data", service.getLocalPosts());
+        return mav;
+    }
     // @RequestMapping("/{temp}")
     // public String index(@PathVariable String temp) {
     //     return temp.equals("index") ? "index" : "other";
