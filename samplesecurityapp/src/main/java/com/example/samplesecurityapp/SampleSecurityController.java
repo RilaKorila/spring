@@ -25,4 +25,12 @@ public class SampleSecurityController {
         mav.addObject("msg", user + "だけの秘密！内緒だよ！");
         return mav;
     }
+
+    @RequestMapping("admin")
+    public ModelAndView admin(ModelAndView mav){
+        mav.setViewName("index");
+        mav.addObject("title", "Adminページ");
+        mav.addObject("msg", "Adminのページだよ！あなたはえらい！");
+        return mav;
+    }
 }
