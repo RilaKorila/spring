@@ -1,4 +1,4 @@
-package com.example.kotolinapp
+package com.example.kotlinapp
 
 import org.springframework.data.repository.CrudRepository
 import org.springframework.stereotype.Repository

@@ -1,4 +1,4 @@
-package com.example.kotolinapp
+package com.example.kotlinapp
 
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
