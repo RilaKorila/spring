@@ -2,12 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-
+    <title>Index</title>
 </head>
 <body>
-<h1>Users</h1>
-
+<h1 th:text="${title}"></h1>
+<input type="button" onclick="location.href='/add'" value="追加ページ">
+<ul th:each="user : ${users}">
+    <li th:text="${user.firstName}"></li>
 </ul>
 </body>
 </html>
