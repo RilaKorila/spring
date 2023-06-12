@@ -37,8 +37,9 @@ public class MainController {
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public ModelAndView add(@RequestParam String firstName, @RequestParam String lastName, ModelAndView mav){
-        User user = new User(0, firstName, lastName, "password", RoleName.USER);
+    public ModelAndView add(@RequestParam String firstName, @RequestParam String lastName,
+                            @RequestParam String password, ModelAndView mav){
+        User user = new User(0, firstName, lastName, password, RoleName.USER);
         userRepository.saveAndFlush(user);
         return new ModelAndView("redirect:/");
     }

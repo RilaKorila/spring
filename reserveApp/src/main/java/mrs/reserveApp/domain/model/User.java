@@ -7,7 +7,7 @@ import jakarta.persistence.*;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column
+    @Column // カラム名は USERID (デフォルト). 指定する場合は @Column(name="カラム名")
     private long userId;
     @Column
     private String password;

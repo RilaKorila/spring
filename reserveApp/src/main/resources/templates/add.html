@@ -8,9 +8,11 @@
 <h1>Add</h1>
 <form action="/add" method="post">
   <label for="firstName">firstName:</label>
-  <input type="text" id="firstName" name="firstName">
+  <input type="text" id="firstName" name="firstName" required>
   <label for="lastName">lastName:</label>
-  <input type="text" id="lastName" name="lastName">
+  <input type="text" id="lastName" name="lastName" required>
+  <label for="password">password:</label>
+  <input type="password" id="password" name="password" required>
   <button type="submit">追加</button>
 </form>
 </body>
