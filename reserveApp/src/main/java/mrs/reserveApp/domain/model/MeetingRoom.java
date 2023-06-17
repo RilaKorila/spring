@@ -2,22 +2,24 @@ package mrs.reserveApp.domain.model;
 
 import jakarta.persistence.*;
 
+import java.io.Serializable;
+
 @Entity
 @Table(name = "meeting_room")
-public class MeetingRoom {
+public class MeetingRoom implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    String roomId;
+    private String roomId;
 
-    String roomName;
+    private String roomName;
 
-    public MeetingRoom(String roomId, String roomName){
-        this.roomId = roomId;
-        this.roomName = roomName;
-    }
-
-    public MeetingRoom(){
-    }
+//    public MeetingRoom(String roomId, String roomName){
+//        this.roomId = roomId;
+//        this.roomName = roomName;
+//    }
+//
+//    public MeetingRoom(){
+//    }
 
     public String getRoomId() {
         return roomId;

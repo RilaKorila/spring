@@ -2,10 +2,11 @@ package mrs.reserveApp.domain.model;
 
 import jakarta.persistence.*;
 
+import java.io.Serializable;
 import java.time.LocalTime;
 
 @Entity
-public class Reservation {
+public class Reservation implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer reservationId;

@@ -2,43 +2,40 @@ package mrs.reserveApp.domain.model;
 
 import jakarta.persistence.*;
 
+import java.io.Serializable;
+
 @Entity
 @Table(name="usr")
-public class User {
+public class User implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column // カラム名は USERID (デフォルト). 指定する場合は @Column(name="カラム名")
-    private long userId;
-    @Column
+    private String userId;
+
     private String password;
 
-    @Column
     private String firstName;
 
-    @Column
     private String lastName;
 
     @Enumerated(EnumType.STRING)
-    @Column
     private RoleName roleName;
 
-    public User(){
-        this(0, "", "", "", RoleName.USER);
-    }
+//    public User(){
+//        this(0, "", "", "", RoleName.USER);
+//    }
+//
+//    public User(String userId, String firstName, String lastName, String password, RoleName roleName){
+//        this.userId = userId;
+//        this.firstName = firstName;
+//        this.lastName = lastName;
+//        this.password = password;
+//        this.roleName = roleName;
+//    }
 
-    public User(long userId, String firstName, String lastName, String password, RoleName roleName){
-        this.userId = userId;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.password = password;
-        this.roleName = roleName;
-    }
-
-    public long getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(long userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 

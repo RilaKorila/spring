@@ -17,30 +17,30 @@ import java.util.List;
 @Controller
 public class MainController {
 
-    @Autowired
-    UserRepository userRepository;
+//    @Autowired
+//    UserRepository userRepository;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public ModelAndView index(ModelAndView mav){
         mav.setViewName("index");
 
-        List<User> users = userRepository.findAll();
-        mav.addObject("users", users);
+//        List<User> users = userRepository.findAll();
+//        mav.addObject("users", users);
 
         return mav;
     }
 
-    @RequestMapping(value = "/add", method = RequestMethod.GET)
-    public ModelAndView add(ModelAndView mav){
-        mav.setViewName("add");
-        return mav;
-    }
+//    @RequestMapping(value = "/add", method = RequestMethod.GET)
+//    public ModelAndView add(ModelAndView mav){
+//        mav.setViewName("add");
+//        return mav;
+//    }
 
-    @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public ModelAndView add(@RequestParam String firstName, @RequestParam String lastName,
-                            @RequestParam String password, ModelAndView mav){
-        User user = new User(0, firstName, lastName, password, RoleName.USER);
-        userRepository.saveAndFlush(user);
-        return new ModelAndView("redirect:/");
-    }
+//    @RequestMapping(value = "/add", method = RequestMethod.POST)
+//    public ModelAndView add(@RequestParam String firstName, @RequestParam String lastName,
+//                            @RequestParam String password, ModelAndView mav){
+//        User user = new User("", firstName, lastName, password, RoleName.USER);
+//        userRepository.saveAndFlush(user);
+//        return new ModelAndView("redirect:/");
+//    }
 }

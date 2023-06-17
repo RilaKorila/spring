@@ -2,9 +2,11 @@ package mrs.reserveApp.domain.model;
 
 import jakarta.persistence.*;
 
+import java.io.Serializable;
+
 @Entity
 @Table(name = "reservable_room")
-public class ReservableRoom {
+public class ReservableRoom implements Serializable {
     @EmbeddedId
     private ReservableRoomId reservableRoomId;
 
