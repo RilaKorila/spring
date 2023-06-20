@@ -29,7 +29,7 @@ import jakarta.transaction.Transactional;
 public class HelloController {
     private boolean flag = false;
 
-    @Autowired
+    @Autowired // フィールドインジェクション
     PersonRepository repository;
 
     @Autowired

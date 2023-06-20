@@ -3,6 +3,8 @@ package com.example.sample1app;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+// アノテーションベースConfiguration: Bean定義用のアノテーションが付与されたクラスをスキャンしてDIコンテナに登録
+// Componentアノテーションによって、スキャン対象であることを明示
 @Component
 public class SampleComponent {
     // private String message = "default message";
