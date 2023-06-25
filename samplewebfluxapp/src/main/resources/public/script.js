@@ -1,7 +1,5 @@
 function submit() {
   const id = document.querySelector("#inputId").value;
-
-  // apiのエンドポイントをこんなふうにベタガキしたくないね
   getData("/post/" + id);
 }
 
